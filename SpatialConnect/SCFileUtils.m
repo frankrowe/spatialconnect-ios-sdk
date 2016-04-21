@@ -17,7 +17,6 @@
 * under the License.
 ******************************************************************************/
 
-#import "JSONKit.h"
 #import "SCFileUtils.h"
 @implementation SCFileUtils
 
@@ -31,7 +30,8 @@
  */
 + (NSDictionary *)jsonStringToDict:(NSString *)string error:(NSError **)err {
   NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
-  NSDictionary *dict = [[JSONDecoder decoder] objectWithData:data error:err];
+  NSDictionary *dict =
+    [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&err];
   return dict;
 }
 
@@ -42,7 +42,7 @@
                                           options:NSDataReadingMappedIfSafe
                                             error:err];
     NSDictionary *dictContent =
-        [[JSONDecoder decoder] objectWithData:data error:err];
+        [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&err];
     if (!dictContent) {
       NSLog(@"Check that your JSON is not malformed for file:%@", filepath);
       NSLog(@"%@", [*err description]);

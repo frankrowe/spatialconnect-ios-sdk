@@ -95,7 +95,7 @@ public class SCReactBridge: NSObject {
     }
     
     func queryAllStores(value: NSDictionary, responseSubscriber subscriber: RACSubscriber) {
-        let filter: SCQueryFilter = SCQueryFilter(fromDictionary: value["filters"] as! [NSObject : AnyObject])
+        let filter: SCQueryFilter = SCQueryFilter(fromDictionary: value["filter"] as! [NSObject : AnyObject])
         self.sc.dataService.queryAllStores(filter).subscribeNext {(next:AnyObject!) -> () in
             let g = next as! SCGeometry
             subscriber.sendNext(["key": "spatialQuery", "body":g.JSONDict()])
@@ -112,7 +112,7 @@ public class SCReactBridge: NSObject {
     }
     
     func queryAllGeoStores(value: NSDictionary, responseSubscriber subscriber: RACSubscriber) {
-        let filter: SCQueryFilter = SCQueryFilter(fromDictionary: value as [NSObject : AnyObject])
+        let filter: SCQueryFilter = SCQueryFilter(fromDictionary: value["filter"] as! [NSObject : AnyObject])
         self.sc.dataService.queryAllStoresOfProtocol(SCSpatialStore.self, filter: filter).subscribeNext {(next:AnyObject!) -> () in
             let g = next as! SCGeometry
             subscriber.sendNext(["key": "spatialQuery", "body":g.JSONDict()])
